@@ -48,6 +48,12 @@ build/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
+# iOS IDE files
+**/ios/**/*.xcworkspace/contents.xcworkspacedata
+**/ios/**/*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+**/ios/**/*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+**/ios/**/*.xcodeproj/xcshareddata/xcschemes/*.xcscheme
+
 # Web related
 **/web/favicon.png
 **/web/icons/

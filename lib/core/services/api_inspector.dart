@@ -2,6 +2,7 @@ import 'package:alice/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 
 /// ApiInspector provides a singleton service for debugging API requests and responses
 /// using the Alice package. This makes it possible for QA testers to access
@@ -11,6 +12,7 @@ class ApiInspector {
   late Alice _alice;
   bool _isInitialized = false;
   final Dio _dio = Dio();
+  bool _isEnabled = false;
 
   factory ApiInspector() {
     return _instance;
@@ -21,6 +23,14 @@ class ApiInspector {
   /// Initialize the API inspector with a navigator key
   /// This must be called before using the inspector
   void initialize({required GlobalKey<NavigatorState> navigatorKey}) {
+    // Check if debug tools should be enabled based on build mode
+    _isEnabled = AppConfig.enableDebugTools;
+    
+    // If debug tools are disabled (production mode), don't initialize Alice
+    if (!_isEnabled) {
+      return;
+    }
+    
     if (!_isInitialized) {
       _alice = Alice(
         navigatorKey: navigatorKey,
@@ -37,12 +47,17 @@ class ApiInspector {
 
   /// Get an HTTP client that works with Alice
   http.Client getHttpClient() {
+    // If debug tools are disabled, return a regular HTTP client
+    if (!_isEnabled) {
+      return http.Client();
+    }
+    
     return _AliceHttpClient(this);
   }
 
   /// Show the Alice inspector UI
   void showInspector() {
-    if (_isInitialized) {
+    if (_isInitialized && _isEnabled) {
       _alice.showInspector();
     }
   }
@@ -55,7 +70,8 @@ class ApiInspector {
     String? body,
     Future<http.Response> Function() httpCall
   ) async {
-    if (!_isInitialized) {
+    // If Alice is not initialized or disabled, just execute the request
+    if (!_isInitialized || !_isEnabled) {
       return await httpCall();
     }
 
@@ -81,6 +97,9 @@ class ApiInspector {
       rethrow;
     }
   }
+  
+  /// Returns whether the API Inspector is enabled (based on build mode)
+  bool get isEnabled => _isEnabled;
 }
 
 /// Custom HTTP client that logs all requests via Alice

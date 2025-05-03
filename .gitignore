@@ -21,6 +21,7 @@ build/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/app/.cxx/
 
 # iOS
 **/ios/**/*.mode1v3

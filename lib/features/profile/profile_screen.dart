@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/providers/profile_provider.dart';
+import '../../core/services/http_logger.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -111,6 +112,31 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                _buildSettingSection(
+                  'Development',
+                  [
+                    SettingItem(
+                      icon: Icons.api_outlined,
+                      title: 'API Logging',
+                      subtitle: HttpLogger().isEnabled ? 'Enabled' : 'Disabled',
+                      trailing: Switch(
+                        value: HttpLogger().isEnabled,
+                        onChanged: (value) {
+                          HttpLogger().setEnabled(value);
+                          // Force a rebuild to update the UI
+                          (context as Element).markNeedsBuild();
+                        },
+                      ),
+                      onTap: () {
+                        final newValue = !HttpLogger().isEnabled;
+                        HttpLogger().setEnabled(newValue);
+                        // Force a rebuild to update the UI
+                        (context as Element).markNeedsBuild();
+                      },
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 24),
                 _buildLogoutButton(context, provider),
                 const SizedBox(height: 8),
@@ -205,6 +231,7 @@ class ProfileScreen extends StatelessWidget {
               return ListTile(
                 leading: Icon(item.icon),
                 title: Text(item.title),
+                subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
                 trailing: item.trailing,
                 onTap: item.onTap,
               );
@@ -384,12 +411,14 @@ class ProfileScreen extends StatelessWidget {
 class SettingItem {
   final IconData icon;
   final String title;
+  final String? subtitle;
   final Widget? trailing;
   final VoidCallback onTap;
 
   SettingItem({
     required this.icon,
     required this.title,
+    this.subtitle,
     this.trailing,
     required this.onTap,
   });

@@ -1,0 +1,1755 @@
+{
+	"info": {
+		"_postman_id": "8669fcd2-ca9b-466a-8cb8-9ecc24f53e4a",
+		"name": "Receipt Scanner API",
+		"description": "API for a receipt scanning application that allows users to upload receipts,\nextract transaction data, view dashboard analytics, and get spending insights.\n\n\nContact Support:\n Name: Receipt Scanner Team",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25498656",
+		"_collection_link": "https://winter-escape-347998.postman.co/workspace/Onelink-Alternative~a5929194-001a-4496-b9d5-228cd267822d/collection/25498656-8669fcd2-ca9b-466a-8cb8-9ecc24f53e4a?action=share&source=collection_link&creator=25498656"
+	},
+	"item": [
+		{
+			"name": "receipts",
+			"item": [
+				{
+					"name": "scan",
+					"item": [
+						{
+							"name": "Scan a receipt",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "receiptImage",
+											"description": "The receipt image to scan",
+											"type": "file",
+											"src": "/Users/ridwanrais/Downloads/nota.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/receipts/scan",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										"scan"
+									]
+								},
+								"description": "Upload and scan a receipt image to extract transaction data"
+							},
+							"response": [
+								{
+									"name": "Receipt scanned successfully",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "receiptImage",
+													"value": "<string>",
+													"description": "The receipt image to scan",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/scan",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												"scan"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Invalid input",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "receiptImage",
+													"value": "<string>",
+													"description": "The receipt image to scan",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/scan",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												"scan"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Unable to process receipt image",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "receiptImage",
+													"value": "<string>",
+													"description": "The receipt image to scan",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/scan",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												"scan"
+											]
+										}
+									},
+									"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+									"code": 422,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{receiptId}",
+					"item": [
+						{
+							"name": "items",
+							"item": [
+								{
+									"name": "Get receipt items",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId/items",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId",
+												"items"
+											],
+											"variable": [
+												{
+													"key": "receiptId",
+													"value": "<string>",
+													"description": "(Required) ID of the receipt"
+												}
+											]
+										},
+										"description": "Retrieve all items from a specific receipt"
+									},
+									"response": [
+										{
+											"name": "Receipt items retrieved successfully",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/receipts/:receiptId/items",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"receipts",
+														":receiptId",
+														"items"
+													],
+													"variable": [
+														{
+															"key": "receiptId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"name\": \"<string>\",\n    \"qty\": \"<integer>\",\n    \"price\": \"<string>\",\n    \"id\": \"<string>\",\n    \"category\": \"<string>\"\n  },\n  {\n    \"name\": \"<string>\",\n    \"qty\": \"<integer>\",\n    \"price\": \"<string>\",\n    \"id\": \"<string>\",\n    \"category\": \"<string>\"\n  }\n]"
+										},
+										{
+											"name": "Receipt not found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/receipts/:receiptId/items",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"receipts",
+														":receiptId",
+														"items"
+													],
+													"variable": [
+														{
+															"key": "receiptId"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get a receipt",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/receipts/:receiptId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"receipts",
+										":receiptId"
+									],
+									"variable": [
+										{
+											"key": "receiptId",
+											"value": "1dd71410-8101-45d9-8997-5d3a80cd95fb",
+											"description": "(Required) ID of the receipt to retrieve"
+										}
+									]
+								},
+								"description": "Retrieve a specific receipt by ID"
+							},
+							"response": [
+								{
+									"name": "Receipt retrieved successfully",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Receipt not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Update a receipt",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/receipts/:receiptId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts",
+										":receiptId"
+									],
+									"variable": [
+										{
+											"key": "receiptId",
+											"value": "<string>",
+											"description": "(Required) ID of the receipt to update"
+										}
+									]
+								},
+								"description": "Update an existing receipt"
+							},
+							"response": [
+								{
+									"name": "Receipt updated successfully",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Invalid input",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Receipt not found",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete a receipt",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/receipts/:receiptId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts",
+										":receiptId"
+									],
+									"variable": [
+										{
+											"key": "receiptId",
+											"value": "<string>",
+											"description": "(Required) ID of the receipt to delete"
+										}
+									]
+								},
+								"description": "Delete an existing receipt"
+							},
+							"response": [
+								{
+									"name": "Receipt deleted successfully",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Receipt not found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/receipts/:receiptId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"receipts",
+												":receiptId"
+											],
+											"variable": [
+												{
+													"key": "receiptId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Get all receipts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/receipts?page=1&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"receipts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "startDate",
+									"value": "<date>",
+									"description": "Filter receipts from this date (inclusive)",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "<date>",
+									"description": "Filter receipts until this date (inclusive)",
+									"disabled": true
+								},
+								{
+									"key": "merchant",
+									"value": "<string>",
+									"description": "Filter receipts by merchant name",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a list of all receipts for the current user"
+					},
+					"response": [
+						{
+							"name": "List of receipts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/receipts?page=1&limit=10&startDate=<date>&endDate=<date>&merchant=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Number of items per page"
+										},
+										{
+											"key": "startDate",
+											"value": "<date>",
+											"description": "Filter receipts from this date (inclusive)"
+										},
+										{
+											"key": "endDate",
+											"value": "<date>",
+											"description": "Filter receipts until this date (inclusive)"
+										},
+										{
+											"key": "merchant",
+											"value": "<string>",
+											"description": "Filter receipts by merchant name"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"merchant\": \"<string>\",\n      \"date\": \"<date>\",\n      \"total\": \"<string>\",\n      \"items\": [\n        {\n          \"name\": \"<string>\",\n          \"qty\": \"<integer>\",\n          \"price\": \"<string>\",\n          \"id\": \"<string>\",\n          \"category\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"qty\": \"<integer>\",\n          \"price\": \"<string>\",\n          \"id\": \"<string>\",\n          \"category\": \"<string>\"\n        }\n      ],\n      \"tax\": \"<string>\",\n      \"subtotal\": \"<string>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"merchant\": \"<string>\",\n      \"date\": \"<date>\",\n      \"total\": \"<string>\",\n      \"items\": [\n        {\n          \"name\": \"<string>\",\n          \"qty\": \"<integer>\",\n          \"price\": \"<string>\",\n          \"id\": \"<string>\",\n          \"category\": \"<string>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"qty\": \"<integer>\",\n          \"price\": \"<string>\",\n          \"id\": \"<string>\",\n          \"category\": \"<string>\"\n        }\n      ],\n      \"tax\": \"<string>\",\n      \"subtotal\": \"<string>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\"\n    }\n  ],\n  \"pagination\": {\n    \"totalItems\": \"<integer>\",\n    \"totalPages\": \"<integer>\",\n    \"currentPage\": \"<integer>\",\n    \"limit\": \"<integer>\"\n  }\n}"
+						},
+						{
+							"name": "Invalid query parameters",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/receipts?page=1&limit=10&startDate=<date>&endDate=<date>&merchant=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Number of items per page"
+										},
+										{
+											"key": "startDate",
+											"value": "<date>",
+											"description": "Filter receipts from this date (inclusive)"
+										},
+										{
+											"key": "endDate",
+											"value": "<date>",
+											"description": "Filter receipts until this date (inclusive)"
+										},
+										{
+											"key": "merchant",
+											"value": "<string>",
+											"description": "Filter receipts by merchant name"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a receipt manually",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/receipts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receipts"
+							]
+						},
+						"description": "Add a receipt manually without scanning"
+					},
+					"response": [
+						{
+							"name": "Receipt created successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/receipts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<string>\",\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+						},
+						{
+							"name": "Invalid input",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"merchant\": \"<string>\",\n  \"date\": \"<date>\",\n  \"total\": \"<string>\",\n  \"items\": [\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"qty\": \"<integer>\",\n      \"price\": \"<string>\",\n      \"id\": \"<string>\",\n      \"category\": \"<string>\"\n    }\n  ],\n  \"tax\": \"<string>\",\n  \"subtotal\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/receipts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"receipts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"item": [
+				{
+					"name": "summary",
+					"item": [
+						{
+							"name": "Get dashboard summary",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/dashboard/summary",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"dashboard",
+										"summary"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "<date>",
+											"description": "Start date for the period (inclusive)",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "<date>",
+											"description": "End date for the period (inclusive)",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Retrieve summarized data for the dashboard"
+							},
+							"response": [
+								{
+									"name": "Dashboard summary data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/dashboard/summary?startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dashboard",
+												"summary"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalSpend\": \"<string>\",\n  \"receiptCount\": \"<integer>\",\n  \"averageSpend\": \"<string>\",\n  \"topCategories\": [\n    {\n      \"category\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\"\n    },\n    {\n      \"category\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\"\n    }\n  ],\n  \"topMerchants\": [\n    {\n      \"merchant\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\"\n    },\n    {\n      \"merchant\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Invalid query parameters",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/dashboard/summary?startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dashboard",
+												"summary"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "spending-trends",
+					"item": [
+						{
+							"name": "Get spending trends",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/dashboard/spending-trends?period=monthly",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"dashboard",
+										"spending-trends"
+									],
+									"query": [
+										{
+											"key": "period",
+											"value": "monthly",
+											"description": "Time period for the trends (daily, weekly, monthly, yearly)"
+										},
+										{
+											"key": "startDate",
+											"value": "<date>",
+											"description": "Start date for the period (inclusive)",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "<date>",
+											"description": "End date for the period (inclusive)",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Retrieve spending trends over time for dashboard visualizations"
+							},
+							"response": [
+								{
+									"name": "Spending trends data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/dashboard/spending-trends?period=monthly&startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dashboard",
+												"spending-trends"
+											],
+											"query": [
+												{
+													"key": "period",
+													"value": "monthly",
+													"description": "Time period for the trends (daily, weekly, monthly, yearly)"
+												},
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"period\": \"weekly\",\n  \"data\": [\n    {\n      \"date\": \"<string>\",\n      \"amount\": \"<string>\"\n    },\n    {\n      \"date\": \"<string>\",\n      \"amount\": \"<string>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Invalid query parameters",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/dashboard/spending-trends?period=monthly&startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dashboard",
+												"spending-trends"
+											],
+											"query": [
+												{
+													"key": "period",
+													"value": "monthly",
+													"description": "Time period for the trends (daily, weekly, monthly, yearly)"
+												},
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "insights",
+			"item": [
+				{
+					"name": "spending-by-category",
+					"item": [
+						{
+							"name": "Get spending by category",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/insights/spending-by-category?startDate=2011-12-01&endDate=2011-12-31",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"insights",
+										"spending-by-category"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2011-12-01",
+											"description": "Start date for the period (inclusive)"
+										},
+										{
+											"key": "endDate",
+											"value": "2011-12-31",
+											"description": "End date for the period (inclusive)"
+										}
+									]
+								},
+								"description": "Retrieve spending breakdown by category"
+							},
+							"response": [
+								{
+									"name": "Category spending data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/spending-by-category?startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"spending-by-category"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"total\": \"<string>\",\n  \"categories\": [\n    {\n      \"name\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\",\n      \"items\": [\n        {\n          \"name\": \"<string>\",\n          \"totalSpent\": \"<string>\",\n          \"count\": \"<integer>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"totalSpent\": \"<string>\",\n          \"count\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"amount\": \"<string>\",\n      \"percentage\": \"<float>\",\n      \"items\": [\n        {\n          \"name\": \"<string>\",\n          \"totalSpent\": \"<string>\",\n          \"count\": \"<integer>\"\n        },\n        {\n          \"name\": \"<string>\",\n          \"totalSpent\": \"<string>\",\n          \"count\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}"
+								},
+								{
+									"name": "Invalid query parameters",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/spending-by-category?startDate=<date>&endDate=<date>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"spending-by-category"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "merchant-frequency",
+					"item": [
+						{
+							"name": "Get merchant frequency",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/insights/merchant-frequency?startDate=2011-12-01&endDate=2011-12-31&limit=10",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"insights",
+										"merchant-frequency"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2011-12-01",
+											"description": "Start date for the period (inclusive)"
+										},
+										{
+											"key": "endDate",
+											"value": "2011-12-31",
+											"description": "End date for the period (inclusive)"
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Number of merchants to return"
+										}
+									]
+								},
+								"description": "Retrieve data on frequently visited merchants"
+							},
+							"response": [
+								{
+									"name": "Merchant frequency data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/merchant-frequency?startDate=<date>&endDate=<date>&limit=10",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"merchant-frequency"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												},
+												{
+													"key": "limit",
+													"value": "10",
+													"description": "Number of merchants to return"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"totalVisits\": \"<integer>\",\n  \"merchants\": [\n    {\n      \"name\": \"<string>\",\n      \"visits\": \"<integer>\",\n      \"totalSpent\": \"<string>\",\n      \"averageSpent\": \"<string>\",\n      \"percentage\": \"<float>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"visits\": \"<integer>\",\n      \"totalSpent\": \"<string>\",\n      \"averageSpent\": \"<string>\",\n      \"percentage\": \"<float>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Invalid query parameters",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/merchant-frequency?startDate=<date>&endDate=<date>&limit=10",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"merchant-frequency"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "<date>",
+													"description": "Start date for the period (inclusive)"
+												},
+												{
+													"key": "endDate",
+													"value": "<date>",
+													"description": "End date for the period (inclusive)"
+												},
+												{
+													"key": "limit",
+													"value": "10",
+													"description": "Number of merchants to return"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "monthly-comparison",
+					"item": [
+						{
+							"name": "Get monthly comparison",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/insights/monthly-comparison?month1=2011-11&month2=2011-12",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"insights",
+										"monthly-comparison"
+									],
+									"query": [
+										{
+											"key": "month1",
+											"value": "2011-11",
+											"description": "(Required) First month for comparison (YYYY-MM)"
+										},
+										{
+											"key": "month2",
+											"value": "2011-12",
+											"description": "(Required) Second month for comparison (YYYY-MM)"
+										}
+									]
+								},
+								"description": "Compare spending between two months"
+							},
+							"response": [
+								{
+									"name": "Monthly comparison data",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/monthly-comparison?month1=2190-13&month2=2190-13",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"monthly-comparison"
+											],
+											"query": [
+												{
+													"key": "month1",
+													"value": "2190-13",
+													"description": "(Required) First month for comparison (YYYY-MM)"
+												},
+												{
+													"key": "month2",
+													"value": "2190-13",
+													"description": "(Required) Second month for comparison (YYYY-MM)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"month1\": \"<string>\",\n  \"month2\": \"<string>\",\n  \"month1Total\": \"<string>\",\n  \"month2Total\": \"<string>\",\n  \"difference\": \"<string>\",\n  \"percentageChange\": \"<float>\",\n  \"categories\": [\n    {\n      \"name\": \"<string>\",\n      \"month1Amount\": \"<string>\",\n      \"month2Amount\": \"<string>\",\n      \"difference\": \"<string>\",\n      \"percentageChange\": \"<float>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"month1Amount\": \"<string>\",\n      \"month2Amount\": \"<string>\",\n      \"difference\": \"<string>\",\n      \"percentageChange\": \"<float>\"\n    }\n  ]\n}"
+								},
+								{
+									"name": "Invalid query parameters",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/insights/monthly-comparison?month1=2190-13&month2=2190-13",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"insights",
+												"monthly-comparison"
+											],
+											"query": [
+												{
+													"key": "month1",
+													"value": "2190-13",
+													"description": "(Required) First month for comparison (YYYY-MM)"
+												},
+												{
+													"key": "month2",
+													"value": "2190-13",
+													"description": "(Required) Second month for comparison (YYYY-MM)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\",\n  \"details\": [\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.receipt-scanner.example.com/v1"
+		}
+	]
+}

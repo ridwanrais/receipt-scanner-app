@@ -17,6 +17,7 @@ import 'features/insights/insights_screen.dart';
 import 'features/profile/profile_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

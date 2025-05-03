@@ -1,0 +1,938 @@
+openapi: 3.0.3
+info:
+  title: Receipt Scanner API
+  description: |
+    API for a receipt scanning application that allows users to upload receipts,
+    extract transaction data, view dashboard analytics, and get spending insights.
+  version: 1.0.0
+  contact:
+    name: Receipt Scanner Team
+servers:
+  - url: https://api.receipt-scanner.example.com/v1
+    description: Production server
+  - url: https://staging-api.receipt-scanner.example.com/v1
+    description: Staging server
+  - url: http://localhost:8080/v1
+    description: Local development server
+
+tags:
+  - name: receipts
+    description: Operations related to receipt scanning and management
+  - name: dashboard
+    description: Operations related to dashboard data retrieval
+  - name: insights
+    description: Operations related to spending insights and analytics
+
+paths:
+  /receipts/scan:
+    post:
+      tags:
+        - receipts
+      summary: Scan a receipt
+      description: Upload and scan a receipt image to extract transaction data
+      operationId: scanReceipt
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                receiptImage:
+                  type: string
+                  format: binary
+                  description: The receipt image to scan
+      responses:
+        '200':
+          description: Receipt scanned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unable to process receipt image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /receipts:
+    get:
+      tags:
+        - receipts
+      summary: Get all receipts
+      description: Retrieve a list of all receipts for the current user
+      operationId: getReceipts
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: startDate
+          in: query
+          description: Filter receipts from this date (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter receipts until this date (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: merchant
+          in: query
+          description: Filter receipts by merchant name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of receipts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Receipt'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      tags:
+        - receipts
+      summary: Create a receipt manually
+      description: Add a receipt manually without scanning
+      operationId: createReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiptInput'
+      responses:
+        '201':
+          description: Receipt created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /receipts/{receiptId}:
+    get:
+      tags:
+        - receipts
+      summary: Get a receipt
+      description: Retrieve a specific receipt by ID
+      operationId: getReceiptById
+      parameters:
+        - name: receiptId
+          in: path
+          description: ID of the receipt to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Receipt retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      tags:
+        - receipts
+      summary: Update a receipt
+      description: Update an existing receipt
+      operationId: updateReceipt
+      parameters:
+        - name: receiptId
+          in: path
+          description: ID of the receipt to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiptInput'
+      responses:
+        '200':
+          description: Receipt updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      tags:
+        - receipts
+      summary: Delete a receipt
+      description: Delete an existing receipt
+      operationId: deleteReceipt
+      parameters:
+        - name: receiptId
+          in: path
+          description: ID of the receipt to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Receipt deleted successfully
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /receipts/{receiptId}/items:
+    get:
+      tags:
+        - receipts
+      summary: Get receipt items
+      description: Retrieve all items from a specific receipt
+      operationId: getReceiptItems
+      parameters:
+        - name: receiptId
+          in: path
+          description: ID of the receipt
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Receipt items retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReceiptItem'
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /dashboard/summary:
+    get:
+      tags:
+        - dashboard
+      summary: Get dashboard summary
+      description: Retrieve summarized data for the dashboard
+      operationId: getDashboardSummary
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Dashboard summary data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardSummary'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /dashboard/spending-trends:
+    get:
+      tags:
+        - dashboard
+      summary: Get spending trends
+      description: Retrieve spending trends over time for dashboard visualizations
+      operationId: getSpendingTrends
+      parameters:
+        - name: period
+          in: query
+          description: Time period for the trends (daily, weekly, monthly, yearly)
+          required: false
+          schema:
+            type: string
+            enum: [daily, weekly, monthly, yearly]
+            default: monthly
+        - name: startDate
+          in: query
+          description: Start date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Spending trends data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpendingTrends'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /insights/spending-by-category:
+    get:
+      tags:
+        - insights
+      summary: Get spending by category
+      description: Retrieve spending breakdown by category
+      operationId: getSpendingByCategory
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Category spending data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategorySpending'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /insights/merchant-frequency:
+    get:
+      tags:
+        - insights
+      summary: Get merchant frequency
+      description: Retrieve data on frequently visited merchants
+      operationId: getMerchantFrequency
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for the period (inclusive)
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: Number of merchants to return
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+      responses:
+        '200':
+          description: Merchant frequency data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantFrequency'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /insights/monthly-comparison:
+    get:
+      tags:
+        - insights
+      summary: Get monthly comparison
+      description: Compare spending between two months
+      operationId: getMonthlyComparison
+      parameters:
+        - name: month1
+          in: query
+          description: First month for comparison (YYYY-MM)
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}$'
+        - name: month2
+          in: query
+          description: Second month for comparison (YYYY-MM)
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}$'
+      responses:
+        '200':
+          description: Monthly comparison data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyComparison'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    ReceiptItem:
+      type: object
+      required:
+        - name
+        - qty
+        - price
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the receipt item
+        name:
+          type: string
+          description: Name of the item
+        qty:
+          type: integer
+          description: Quantity of the item
+        price:
+          type: string
+          description: Price of the item
+        category:
+          type: string
+          description: Category of the item (automatically determined or user-assigned)
+      example:
+        id: "item-123"
+        name: "Organic Milk"
+        qty: 2
+        price: "3.99"
+        category: "Groceries"
+    
+    ReceiptInput:
+      type: object
+      required:
+        - merchant
+        - date
+        - total
+        - items
+      properties:
+        merchant:
+          type: string
+          description: Name of the merchant/store
+        date:
+          type: string
+          format: date
+          description: Date of the receipt
+        total:
+          type: string
+          description: Total amount on the receipt
+        tax:
+          type: string
+          description: Tax amount on the receipt
+        subtotal:
+          type: string
+          description: Subtotal amount (before tax)
+        items:
+          type: array
+          description: List of items on the receipt
+          items:
+            $ref: '#/components/schemas/ReceiptItem'
+    
+    Receipt:
+      type: object
+      required:
+        - id
+        - merchant
+        - date
+        - total
+        - items
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the receipt
+        merchant:
+          type: string
+          description: Name of the merchant/store
+        date:
+          type: string
+          format: date
+          description: Date of the receipt
+        total:
+          type: string
+          description: Total amount on the receipt
+        tax:
+          type: string
+          description: Tax amount on the receipt
+        subtotal:
+          type: string
+          description: Subtotal amount (before tax)
+        items:
+          type: array
+          description: List of items on the receipt
+          items:
+            $ref: '#/components/schemas/ReceiptItem'
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the receipt was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the receipt was last updated
+      example:
+        id: "receipt-789"
+        merchant: "Whole Foods Market"
+        date: "2023-04-15"
+        total: "42.86"
+        tax: "3.52"
+        subtotal: "39.34"
+        items: [
+          {
+            "id": "item-123",
+            "name": "Organic Milk",
+            "qty": 2,
+            "price": "3.99",
+            "category": "Groceries"
+          },
+          {
+            "id": "item-124",
+            "name": "Whole Wheat Bread",
+            "qty": 1,
+            "price": "4.29",
+            "category": "Groceries"
+          }
+        ]
+        createdAt: "2023-04-15T14:32:21Z"
+        updatedAt: "2023-04-15T14:32:21Z"
+    
+    Pagination:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: Total number of items
+        totalPages:
+          type: integer
+          description: Total number of pages
+        currentPage:
+          type: integer
+          description: Current page number
+        limit:
+          type: integer
+          description: Number of items per page
+      example:
+        totalItems: 42
+        totalPages: 5
+        currentPage: 1
+        limit: 10
+    
+    DashboardSummary:
+      type: object
+      properties:
+        totalSpend:
+          type: string
+          description: Total amount spent in the period
+        receiptCount:
+          type: integer
+          description: Number of receipts in the period
+        averageSpend:
+          type: string
+          description: Average amount spent per receipt
+        topCategories:
+          type: array
+          description: Top spending categories
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              amount:
+                type: string
+              percentage:
+                type: number
+                format: float
+        topMerchants:
+          type: array
+          description: Top merchants by spending
+          items:
+            type: object
+            properties:
+              merchant:
+                type: string
+              amount:
+                type: string
+              percentage:
+                type: number
+                format: float
+      example:
+        totalSpend: "567.42"
+        receiptCount: 15
+        averageSpend: "37.83"
+        topCategories: [
+          {
+            "category": "Groceries",
+            "amount": "234.56",
+            "percentage": 41.3
+          },
+          {
+            "category": "Dining",
+            "amount": "175.89",
+            "percentage": 31.0
+          }
+        ]
+        topMerchants: [
+          {
+            "merchant": "Whole Foods Market",
+            "amount": "135.67",
+            "percentage": 23.9
+          },
+          {
+            "merchant": "Local Restaurant",
+            "amount": "87.45",
+            "percentage": 15.4
+          }
+        ]
+    
+    SpendingTrends:
+      type: object
+      properties:
+        period:
+          type: string
+          enum: [daily, weekly, monthly, yearly]
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                description: Date/period label
+              amount:
+                type: string
+                description: Amount spent in that period
+      example:
+        period: "monthly"
+        data: [
+          {
+            "date": "2023-01",
+            "amount": "456.78"
+          },
+          {
+            "date": "2023-02",
+            "amount": "523.45"
+          },
+          {
+            "date": "2023-03",
+            "amount": "489.23"
+          }
+        ]
+    
+    CategorySpending:
+      type: object
+      properties:
+        total:
+          type: string
+          description: Total amount spent across all categories
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Category name
+              amount:
+                type: string
+                description: Amount spent in this category
+              percentage:
+                type: number
+                format: float
+                description: Percentage of total spending
+              items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Item name
+                    totalSpent:
+                      type: string
+                      description: Total spent on this item across receipts
+                    count:
+                      type: integer
+                      description: Number of times this item was purchased
+      example:
+        total: "678.92"
+        categories: [
+          {
+            "name": "Groceries",
+            "amount": "321.45",
+            "percentage": 47.3,
+            "items": [
+              {
+                "name": "Milk",
+                "totalSpent": "35.91",
+                "count": 9
+              },
+              {
+                "name": "Bread",
+                "totalSpent": "21.45",
+                "count": 5
+              }
+            ]
+          },
+          {
+            "name": "Dining",
+            "amount": "189.32",
+            "percentage": 27.9,
+            "items": [
+              {
+                "name": "Pizza",
+                "totalSpent": "56.78",
+                "count": 3
+              }
+            ]
+          }
+        ]
+    
+    MerchantFrequency:
+      type: object
+      properties:
+        totalVisits:
+          type: integer
+          description: Total number of merchant visits
+        merchants:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Merchant name
+              visits:
+                type: integer
+                description: Number of visits
+              totalSpent:
+                type: string
+                description: Total amount spent at this merchant
+              averageSpent:
+                type: string
+                description: Average amount spent per visit
+              percentage:
+                type: number
+                format: float
+                description: Percentage of total visits
+      example:
+        totalVisits: 32
+        merchants: [
+          {
+            "name": "Whole Foods Market",
+            "visits": 8,
+            "totalSpent": "267.89",
+            "averageSpent": "33.49",
+            "percentage": 25.0
+          },
+          {
+            "name": "Target",
+            "visits": 6,
+            "totalSpent": "189.45",
+            "averageSpent": "31.58",
+            "percentage": 18.75
+          }
+        ]
+    
+    MonthlyComparison:
+      type: object
+      properties:
+        month1:
+          type: string
+          description: First month in the comparison (YYYY-MM)
+        month2:
+          type: string
+          description: Second month in the comparison (YYYY-MM)
+        month1Total:
+          type: string
+          description: Total spending in the first month
+        month2Total:
+          type: string
+          description: Total spending in the second month
+        difference:
+          type: string
+          description: Absolute difference between the two months
+        percentageChange:
+          type: number
+          format: float
+          description: Percentage change from month1 to month2
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Category name
+              month1Amount:
+                type: string
+                description: Amount spent in this category in month1
+              month2Amount:
+                type: string
+                description: Amount spent in this category in month2
+              difference:
+                type: string
+                description: Absolute difference between the two months for this category
+              percentageChange:
+                type: number
+                format: float
+                description: Percentage change from month1 to month2 for this category
+      example:
+        month1: "2023-03"
+        month2: "2023-04"
+        month1Total: "567.89"
+        month2Total: "632.45"
+        difference: "64.56"
+        percentageChange: 11.4
+        categories: [
+          {
+            "name": "Groceries",
+            "month1Amount": "246.78",
+            "month2Amount": "289.34",
+            "difference": "42.56",
+            "percentageChange": 17.2
+          },
+          {
+            "name": "Dining",
+            "month1Amount": "178.45",
+            "month2Amount": "156.78",
+            "difference": "-21.67",
+            "percentageChange": -12.1
+          }
+        ]
+    
+    Error:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          description: Error status code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: array
+          description: Detailed error information
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Field that caused the error
+              message:
+                type: string
+                description: Detailed error message for this field
+      example:
+        status: "400"
+        message: "Invalid request parameters"
+        details: [
+          {
+            "field": "startDate",
+            "message": "startDate must be a valid date in YYYY-MM-DD format"
+          }
+        ]

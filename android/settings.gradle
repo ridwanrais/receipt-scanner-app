@@ -24,3 +24,15 @@ plugins {
 }
 
 include ":app"
+
+// Alice namespace patch
+gradle.ext.aliceNamespaceFixed = true
+gradle.allprojects { project ->
+    project.plugins.withId('com.android.library') { 
+        if (project.name == "alice") {
+            project.android { 
+                namespace = "com.jhomlala.alice"
+            }
+        }
+    }
+}

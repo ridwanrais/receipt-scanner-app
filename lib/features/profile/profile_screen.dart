@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/providers/profile_provider.dart';
-import '../../core/services/http_logger.dart';
+import '../../core/services/api_inspector.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -118,22 +118,9 @@ class ProfileScreen extends StatelessWidget {
                   [
                     SettingItem(
                       icon: Icons.api_outlined,
-                      title: 'API Logging',
-                      subtitle: HttpLogger().isEnabled ? 'Enabled' : 'Disabled',
-                      trailing: Switch(
-                        value: HttpLogger().isEnabled,
-                        onChanged: (value) {
-                          HttpLogger().setEnabled(value);
-                          // Force a rebuild to update the UI
-                          (context as Element).markNeedsBuild();
-                        },
-                      ),
-                      onTap: () {
-                        final newValue = !HttpLogger().isEnabled;
-                        HttpLogger().setEnabled(newValue);
-                        // Force a rebuild to update the UI
-                        (context as Element).markNeedsBuild();
-                      },
+                      title: 'API Inspector',
+                      subtitle: 'View API call details',
+                      onTap: () => ApiInspector().showInspector(),
                     ),
                   ],
                 ),

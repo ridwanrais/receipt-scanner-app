@@ -1,0 +1,37 @@
+// Find the Alice module's build.gradle file path
+def aliceModulePath = new File(project.gradle.includedBuilds*.projectDir.find {
+    it.path.contains('alice')
+}?.path ?: new File('').absolutePath)
+
+// Check if the Alice module exists
+if (aliceModulePath.exists()) {
+    // Apply a post-evaluate hook to add namespace
+    gradle.taskGraph.whenReady {
+        project.gradle.includedBuilds.each { includedBuild ->
+            if (includedBuild.name == 'alice') {
+                includedBuild.projectDir.eachFileRecurse { file ->
+                    if (file.name == 'build.gradle') {
+                        println "Patching Alice module build.gradle at ${file.absolutePath}"
+                        
+                        // Backup the original build.gradle
+                        def originalContent = file.text
+                        def backupFile = new File(file.absolutePath + '.backup')
+                        if (!backupFile.exists()) {
+                            backupFile.text = originalContent
+                        }
+                        
+                        // Add namespace to build.gradle if it doesn't already have it
+                        if (!originalContent.contains('namespace')) {
+                            def updatedContent = originalContent.replace(
+                                'android {', 
+                                'android {\n    namespace "com.jhomlala.alice"'
+                            )
+                            file.text = updatedContent
+                            println "Added namespace to Alice build.gradle"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

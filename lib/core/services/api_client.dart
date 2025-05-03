@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'http_logger.dart';
+import 'api_inspector.dart';
 
 class ApiResponse<T> {
   final T? data;
@@ -24,7 +24,7 @@ class ApiClient {
   ApiClient({
     required this.baseUrl,
     http.Client? httpClient,
-  }) : _httpClient = httpClient ?? HttpLogger().getHttpClient();
+  }) : _httpClient = httpClient ?? ApiInspector().getHttpClient();
 
   // GET request
   Future<ApiResponse<T>> get<T>(

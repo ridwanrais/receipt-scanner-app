@@ -1,0 +1,9 @@
+// Add this to the end of the settings.gradle file
+gradle.ext.aliceNamespaceFixed = true
+
+// Apply patch to included Alice module to fix namespace issues
+gradle.settingsEvaluated { settings ->
+    settings.gradle.beforeProject { project ->
+        project.ext.aliceNamespaceFixed = true
+    }
+}

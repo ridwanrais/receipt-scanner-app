@@ -16,7 +16,11 @@ import 'features/receipts/receipts_screen.dart';
 import 'features/insights/insights_screen.dart';
 import 'features/profile/profile_screen.dart';
 
+// Import API inspector
+import 'core/services/api_inspector.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -25,6 +29,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create a navigator key for Alice
+    final navigatorKey = GlobalKey<NavigatorState>();
+    
+    // Initialize API inspector with navigator key
+    ApiInspector().initialize(navigatorKey: navigatorKey);
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
@@ -41,6 +51,7 @@ class MyApp extends StatelessWidget {
             themeMode: profileProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             home: const HomeScreen(),
             debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey, // Set navigator key for Alice
           );
         },
       ),

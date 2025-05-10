@@ -22,6 +22,21 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// Apply Alice module namespace patch
+// This is needed because Alice's module doesn't define a namespace, which causes build errors
+gradle.beforeProject { project ->
+    project.afterEvaluate {
+        if (project.name == "alice") {
+            if (project.plugins.hasPlugin("com.android.library")) {
+                project.android {
+                    namespace "com.jhomlala.alice"
+                }
+                println "Added namespace to Alice module: com.jhomlala.alice"
+            }
+        }
+    }
+}
+
 android {
     namespace "com.receiptai.receipt_scanner"
     compileSdk flutter.compileSdkVersion

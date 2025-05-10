@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/providers/profile_provider.dart';
+import '../../core/services/api_inspector.dart';
+import '../../core/config/app_config.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -111,6 +113,21 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                // Only show the development section in debug/profile builds
+                if (AppConfig.enableDebugTools) ...[
+                  const SizedBox(height: 16),
+                  _buildSettingSection(
+                    'Development',
+                    [
+                      SettingItem(
+                        icon: Icons.api_outlined,
+                        title: 'API Inspector',
+                        subtitle: 'View API call details',
+                        onTap: () => ApiInspector().showInspector(),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 24),
                 _buildLogoutButton(context, provider),
                 const SizedBox(height: 8),
@@ -205,6 +222,7 @@ class ProfileScreen extends StatelessWidget {
               return ListTile(
                 leading: Icon(item.icon),
                 title: Text(item.title),
+                subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
                 trailing: item.trailing,
                 onTap: item.onTap,
               );
@@ -384,12 +402,14 @@ class ProfileScreen extends StatelessWidget {
 class SettingItem {
   final IconData icon;
   final String title;
+  final String? subtitle;
   final Widget? trailing;
   final VoidCallback onTap;
 
   SettingItem({
     required this.icon,
     required this.title,
+    this.subtitle,
     this.trailing,
     required this.onTap,
   });

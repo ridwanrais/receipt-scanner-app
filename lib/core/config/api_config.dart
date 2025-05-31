@@ -1,6 +1,9 @@
 class ApiConfig {
   // Base URL for API calls (without version)
-  static const String baseUrl = 'https://api.receipt-scan.ridwan-dev.cloud';
+  // static const String baseUrl = 'https://api.receipt-scan.ridwan-dev.cloud';
+  // static const String baseUrl = 'http://localhost:8080';
+  static const String baseUrl = 'https://catfish-right-tick.ngrok-free.app';
+  
   
   // API version
   static const String apiVersion = 'v1';

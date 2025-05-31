@@ -45,6 +45,11 @@ class ApiInspector {
     }
   }
 
+  /// Get the Alice instance
+  Alice getAlice() {
+    return _alice;
+  }
+
   /// Get an HTTP client that works with Alice
   http.Client getHttpClient() {
     // If debug tools are disabled, return a regular HTTP client

@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter on Specific Device",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "10DEBP0BXX0009M",
+      "args": ["--no-enable-impeller", "--verbose"]
+    },
+    {
+      "name": "Flutter",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--verbose"]
+    }
+  ]
+}

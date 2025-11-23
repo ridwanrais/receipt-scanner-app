@@ -5,6 +5,8 @@ import { useReceiptsStore } from '../store/receiptsStore';
 import { Card, CardBody, CardHeader } from '../components/Card';
 import { Button } from '../components/Button';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import { usePullToRefresh } from '../hooks/usePullToRefresh';
+import { PullToRefreshIndicator } from '../components/PullToRefresh';
 
 export const ReceiptDetail: React.FC = () => {
     const { receiptId } = useParams<{ receiptId: string }>();
@@ -54,9 +56,21 @@ export const ReceiptDetail: React.FC = () => {
         navigate(`/receipt/${receiptId}/edit`);
     };
 
+    const handleRefresh = async () => {
+        await fetchReceipt();
+    };
+
+    const { containerRef, isRefreshing, pullDistance } = usePullToRefresh({
+        onRefresh: handleRefresh,
+    });
+
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div ref={containerRef} className="min-h-screen bg-gray-50 flex items-center justify-center overflow-y-auto">
+                <PullToRefreshIndicator
+                    pullDistance={pullDistance}
+                    isRefreshing={isRefreshing}
+                />
                 <div className="text-center">
                     <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                     <p className="text-gray-600 mt-4">Loading receipt...</p>
@@ -67,7 +81,11 @@ export const ReceiptDetail: React.FC = () => {
 
     if (error || !selectedReceipt) {
         return (
-            <div className="min-h-screen bg-gray-50 p-4">
+            <div ref={containerRef} className="min-h-screen bg-gray-50 p-4 overflow-y-auto">
+                <PullToRefreshIndicator
+                    pullDistance={pullDistance}
+                    isRefreshing={isRefreshing}
+                />
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                     {error || 'Receipt not found'}
                 </div>
@@ -79,7 +97,11 @@ export const ReceiptDetail: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div ref={containerRef} className="min-h-screen bg-gray-50 pb-20 overflow-y-auto">
+            <PullToRefreshIndicator
+                pullDistance={pullDistance}
+                isRefreshing={isRefreshing}
+            />
             <div className="bg-primary-600 text-white p-4 shadow-md">
                 <div className="flex items-center">
                     <button

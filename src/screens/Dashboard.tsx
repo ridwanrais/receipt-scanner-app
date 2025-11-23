@@ -4,6 +4,8 @@ import { Card, CardBody, CardHeader } from '../components/Card';
 import { Chart, StatCard } from '../components/Chart';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
+import { usePullToRefresh } from '../hooks/usePullToRefresh';
+import { PullToRefreshIndicator } from '../components/PullToRefresh';
 import type { DashboardSummaryResponse } from '../types/api';
 
 export const Dashboard: React.FC = () => {
@@ -45,9 +47,21 @@ export const Dashboard: React.FC = () => {
         setTimeout(() => fetchSummary(), 100);
     };
 
+    const handleRefresh = async () => {
+        await fetchSummary();
+    };
+
+    const { containerRef, isRefreshing, pullDistance } = usePullToRefresh({
+        onRefresh: handleRefresh,
+    });
+
     if (isLoading && !summary) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center pb-20">
+            <div ref={containerRef} className="min-h-screen bg-gray-50 flex items-center justify-center pb-20 overflow-y-auto">
+                <PullToRefreshIndicator
+                    pullDistance={pullDistance}
+                    isRefreshing={isRefreshing}
+                />
                 <div className="text-center">
                     <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                     <p className="text-gray-600 mt-4">Loading dashboard...</p>
@@ -57,7 +71,11 @@ export const Dashboard: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div ref={containerRef} className="min-h-screen bg-gray-50 pb-20 overflow-y-auto">
+            <PullToRefreshIndicator
+                pullDistance={pullDistance}
+                isRefreshing={isRefreshing}
+            />
             <div className="bg-primary-600 text-white p-4 shadow-md">
                 <h1 className="text-2xl font-bold">Dashboard</h1>
                 <p className="text-primary-100 text-sm mt-1">Analytics and insights</p>

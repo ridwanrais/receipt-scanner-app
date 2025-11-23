@@ -6,6 +6,8 @@ import { Card, CardBody } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import { usePullToRefresh } from '../hooks/usePullToRefresh';
+import { PullToRefreshIndicator } from '../components/PullToRefresh';
 import type { ReceiptsQueryParams } from '../types/api';
 
 export const Home: React.FC = () => {
@@ -74,8 +76,20 @@ export const Home: React.FC = () => {
         }
     };
 
+    const handleRefresh = async () => {
+        await fetchReceipts();
+    };
+
+    const { containerRef, isRefreshing, pullDistance } = usePullToRefresh({
+        onRefresh: handleRefresh,
+    });
+
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div ref={containerRef} className="min-h-screen bg-gray-50 pb-20 overflow-y-auto">
+            <PullToRefreshIndicator
+                pullDistance={pullDistance}
+                isRefreshing={isRefreshing}
+            />
             <div className="bg-primary-600 text-white p-4 shadow-md">
                 <h1 className="text-2xl font-bold">My Receipts</h1>
                 <p className="text-primary-100 text-sm mt-1">

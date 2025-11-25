@@ -1,11 +1,26 @@
 /**
  * Format currency string to display format
  */
-export const formatCurrency = (amount: string | number): string => {
+export const formatCurrency = (amount: string | number, currency: string = 'USD'): string => {
     const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
-    return new Intl.NumberFormat('en-US', {
+
+    // Map currency to locale for better formatting
+    const localeMap: Record<string, string> = {
+        'USD': 'en-US',
+        'IDR': 'id-ID',
+        'EUR': 'de-DE',
+        'GBP': 'en-GB',
+        'JPY': 'ja-JP',
+        'SGD': 'en-SG',
+        'MYR': 'ms-MY',
+    };
+
+    const locale = localeMap[currency] || 'en-US';
+
+    return new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: 'USD',
+        currency: currency,
+        minimumFractionDigits: 0,
     }).format(numAmount);
 };
 

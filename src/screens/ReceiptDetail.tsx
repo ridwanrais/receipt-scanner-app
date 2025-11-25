@@ -137,15 +137,15 @@ export const ReceiptDetail: React.FC = () => {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Subtotal</span>
-                                <span className="font-semibold text-gray-900">{formatCurrency(selectedReceipt.subtotal)}</span>
+                                <span className="font-semibold text-gray-900">{formatCurrency(selectedReceipt.subtotal, selectedReceipt.items[0]?.currency || 'USD')}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-gray-600">Tax</span>
-                                <span className="font-semibold text-gray-900">{formatCurrency(selectedReceipt.tax)}</span>
+                                <span className="font-semibold text-gray-900">{formatCurrency(selectedReceipt.tax, selectedReceipt.items[0]?.currency || 'USD')}</span>
                             </div>
                             <div className="flex justify-between pt-3 border-t border-gray-200">
                                 <span className="text-lg font-semibold text-gray-900">Total</span>
-                                <span className="text-lg font-bold text-primary-600">{formatCurrency(selectedReceipt.total)}</span>
+                                <span className="text-lg font-bold text-primary-600">{formatCurrency(selectedReceipt.total, selectedReceipt.items[0]?.currency || 'USD')}</span>
                             </div>
                         </div>
                     </CardBody>
@@ -169,7 +169,7 @@ export const ReceiptDetail: React.FC = () => {
                                                 {item.category} • Qty: {item.qty}
                                             </p>
                                         </div>
-                                        <p className="font-semibold text-gray-900">{formatCurrency(item.price)}</p>
+                                        <p className="font-semibold text-gray-900">{formatCurrency(item.price, item.currency)}</p>
                                     </div>
                                 </div>
                             ))}

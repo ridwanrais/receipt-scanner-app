@@ -39,6 +39,7 @@ export interface ReceiptItemResponse {
     qty: number;
     price: string;
     category: string;
+    currency: string;
 }
 
 export interface ReceiptsListResponse {

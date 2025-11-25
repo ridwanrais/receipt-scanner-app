@@ -176,7 +176,7 @@ export const Home: React.FC = () => {
                                         </div>
                                         <div className="text-right">
                                             <p className="text-xl font-bold text-primary-600">
-                                                {formatCurrency(receipt.total)}
+                                                {formatCurrency(receipt.total, receipt.items[0]?.currency || 'USD')}
                                             </p>
                                             <p className="text-xs text-gray-500 mt-1">
                                                 {receipt.items.length} items

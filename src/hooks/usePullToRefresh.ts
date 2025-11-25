@@ -23,8 +23,8 @@ export const usePullToRefresh = ({
         if (!container) return;
 
         const handleTouchStart = (e: TouchEvent) => {
-            // Only start if we're at the top of the scroll container
-            if (container.scrollTop === 0 && !isRefreshing) {
+            // Only start if we're at the top of the page
+            if (window.scrollY === 0 && !isRefreshing) {
                 startY.current = e.touches[0].clientY;
                 isDragging.current = true;
             }
@@ -38,8 +38,8 @@ export const usePullToRefresh = ({
 
             // Only pull down, not up
             if (diff > 0) {
-                // Prevent default scrolling when pulling
-                if (container.scrollTop === 0) {
+                // Prevent default scrolling when pulling from the top
+                if (window.scrollY === 0) {
                     e.preventDefault();
                 }
 

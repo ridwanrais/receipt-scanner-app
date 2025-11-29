@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import { Home } from './screens/Home';
 import { Capture } from './screens/Capture';
 import { ReceiptDetail } from './screens/ReceiptDetail';
 import { AddReceipt } from './screens/AddReceipt';
 import { Dashboard } from './screens/Dashboard';
+import Login from './pages/Login';
+import AuthCallback from './pages/AuthCallback';
+import ProtectedRoute from './components/ProtectedRoute';
+import { useAuthStore } from './stores/authStore';
 
 const BottomNav: React.FC = () => {
     const location = useLocation();
@@ -19,8 +23,8 @@ const BottomNav: React.FC = () => {
                 <Link
                     to="/"
                     className={`flex flex-col items-center justify-center flex-1 h-full ${isActive('/') && !isActive('/receipt') && !isActive('/add-receipt')
-                            ? 'text-primary-600'
-                            : 'text-gray-600'
+                        ? 'text-primary-600'
+                        : 'text-gray-600'
                         }`}
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,8 +36,8 @@ const BottomNav: React.FC = () => {
                 <Link
                     to="/capture"
                     className={`flex flex-col items-center justify-center flex-1 h-full ${isActive('/capture') || isActive('/add-receipt')
-                            ? 'text-primary-600'
-                            : 'text-gray-600'
+                        ? 'text-primary-600'
+                        : 'text-gray-600'
                         }`}
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,18 +63,65 @@ const BottomNav: React.FC = () => {
 };
 
 function App() {
+    const { loadStoredAuth, isAuthenticated } = useAuthStore();
+
+    useEffect(() => {
+        // Load stored authentication on app start
+        loadStoredAuth();
+    }, [loadStoredAuth]);
+
     return (
         <BrowserRouter>
             <div className="App">
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/capture" element={<Capture />} />
-                    <Route path="/receipt/:receiptId" element={<ReceiptDetail />} />
-                    <Route path="/add-receipt" element={<AddReceipt />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    {/* Public routes */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/auth/callback" element={<AuthCallback />} />
+
+                    {/* Protected routes */}
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/capture"
+                        element={
+                            <ProtectedRoute>
+                                <Capture />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/receipt/:receiptId"
+                        element={
+                            <ProtectedRoute>
+                                <ReceiptDetail />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/add-receipt"
+                        element={
+                            <ProtectedRoute>
+                                <AddReceipt />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />} />
                 </Routes>
-                <BottomNav />
+                {isAuthenticated && <BottomNav />}
             </div>
         </BrowserRouter>
     );

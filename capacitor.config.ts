@@ -10,6 +10,11 @@ const config: CapacitorConfig = {
     plugins: {
         Camera: {
             presentationStyle: 'fullscreen'
+        },
+        GoogleAuth: {
+            scopes: ['profile', 'email'],
+            serverClientId: '685621768072-iarp1tjb8i3k77rb4or2piqg7njm24ks.apps.googleusercontent.com', // Your web client ID (optional)
+            forceCodeForRefreshToken: true
         }
     }
 };

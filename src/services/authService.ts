@@ -40,8 +40,9 @@ export interface TokenPair {
 
 class AuthService {
     constructor() {
-        // Initialize Google Auth for web
-        if (!Capacitor.isNativePlatform()) {
+        // Only initialize Google Auth for native platforms
+        // Web uses backend OAuth redirect flow, not the Capacitor plugin
+        if (Capacitor.isNativePlatform()) {
             GoogleAuth.initialize({
                 clientId: '685621768072-iarp1tjb8i3k77rb4or2piqg7njm24ks.apps.googleusercontent.com',
                 scopes: ['profile', 'email'],

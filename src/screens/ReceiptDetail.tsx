@@ -11,9 +11,10 @@ import { PullToRefreshIndicator } from '../components/PullToRefresh';
 export const ReceiptDetail: React.FC = () => {
     const { receiptId } = useParams<{ receiptId: string }>();
     const navigate = useNavigate();
-    const { selectedReceipt, setSelectedReceipt, removeReceipt } = useReceiptsStore();
+    const { selectedReceipt, setSelectedReceipt, removeReceipt, updateReceipt } = useReceiptsStore();
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isRetryScanning, setIsRetryScanning] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -54,6 +55,24 @@ export const ReceiptDetail: React.FC = () => {
 
     const handleEdit = () => {
         navigate(`/receipt/${receiptId}/edit`);
+    };
+
+    const handleRetryScan = async () => {
+        if (!window.confirm('Are you sure you want to retry scanning this receipt? This will overwrite the current data.')) {
+            return;
+        }
+
+        try {
+            setIsRetryScanning(true);
+            setError(null);
+            const updatedReceipt = await receiptsApi.retryScan(receiptId!);
+            setSelectedReceipt(updatedReceipt);
+            updateReceipt(updatedReceipt);
+        } catch (err: any) {
+            setError(err.message || 'Failed to retry scan receipt');
+        } finally {
+            setIsRetryScanning(false);
+        }
     };
 
     const handleRefresh = async () => {
@@ -182,6 +201,16 @@ export const ReceiptDetail: React.FC = () => {
                     <Button onClick={handleEdit} className="w-full">
                         Edit Receipt
                     </Button>
+                    {selectedReceipt.receipt_url && (
+                        <Button
+                            onClick={handleRetryScan}
+                            variant="secondary"
+                            className="w-full"
+                            isLoading={isRetryScanning}
+                        >
+                            Retry Scan
+                        </Button>
+                    )}
                     <Button
                         onClick={handleDelete}
                         variant="danger"

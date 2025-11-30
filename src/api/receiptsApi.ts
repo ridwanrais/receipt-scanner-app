@@ -57,4 +57,12 @@ export const receiptsApi = {
         );
         return response.data;
     },
+
+    // Retry scanning an existing receipt
+    retryScan: async (receiptId: string): Promise<ReceiptResponse> => {
+        const response = await axiosClient.post<ReceiptResponse>(
+            `/v1/receipts/${receiptId}/retry-scan`
+        );
+        return response.data;
+    },
 };

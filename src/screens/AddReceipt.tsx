@@ -36,9 +36,14 @@ export const AddReceipt: React.FC = () => {
             return;
         }
 
+        // Add item with currency (default to USD or use existing items' currency)
+        const defaultCurrency = formData.items.length > 0 && formData.items[0].currency
+            ? formData.items[0].currency
+            : 'USD';
+
         setFormData({
             ...formData,
-            items: [...formData.items, { ...currentItem }],
+            items: [...formData.items, { ...currentItem, currency: defaultCurrency }],
         });
 
         setCurrentItem({

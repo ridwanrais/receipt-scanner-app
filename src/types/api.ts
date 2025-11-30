@@ -8,6 +8,7 @@ export interface Receipt {
     total: number;
     items: ReceiptItem[];
     image_url?: string;
+    receipt_url?: string;
     created_at?: string;
     updated_at?: string;
 }
@@ -18,6 +19,7 @@ export interface ReceiptItem {
     qty: number;
     price: number;
     category: string;
+    currency?: string;
 }
 
 // Response models
@@ -29,6 +31,7 @@ export interface ReceiptResponse {
     tax: string;
     total: string;
     items: ReceiptItemResponse[];
+    receipt_url?: string;
     createdAt: string;
     updatedAt: string;
 }

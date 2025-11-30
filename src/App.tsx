@@ -4,6 +4,7 @@ import { Home } from './screens/Home';
 import { Capture } from './screens/Capture';
 import { ReceiptDetail } from './screens/ReceiptDetail';
 import { AddReceipt } from './screens/AddReceipt';
+import { EditReceipt } from './screens/EditReceipt';
 import { Dashboard } from './screens/Dashboard';
 import Login from './pages/Login';
 import AuthCallback from './pages/AuthCallback';
@@ -100,6 +101,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <ReceiptDetail />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/receipt/:receiptId/edit"
+                        element={
+                            <ProtectedRoute>
+                                <EditReceipt />
                             </ProtectedRoute>
                         }
                     />

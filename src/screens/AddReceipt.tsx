@@ -56,16 +56,11 @@ export const AddReceipt: React.FC = () => {
     };
 
     const handleRemoveItem = (index: number) => {
+        const newItems = formData.items.filter((_, i) => i !== index);
+        const subtotal = newItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
         setFormData({
             ...formData,
-            items: formData.items.filter((_, i) => i !== index),
-        });
-    };
-
-    const calculateTotal = () => {
-        const subtotal = formData.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        setFormData({
-            ...formData,
+            items: newItems,
             subtotal,
             total: subtotal + formData.tax,
         });
@@ -153,9 +148,9 @@ export const AddReceipt: React.FC = () => {
                                 value={formData.tax}
                                 onChange={(e) => {
                                     const tax = parseFloat(e.target.value) || 0;
-                                    setFormData({ ...formData, tax });
+                                    const subtotal = formData.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                                    setFormData({ ...formData, tax, total: subtotal + tax });
                                 }}
-                                onBlur={calculateTotal}
                             />
                         </div>
                     </CardBody>

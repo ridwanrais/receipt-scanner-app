@@ -5,7 +5,7 @@ import { useReceiptsStore } from '../store/receiptsStore';
 import { Card, CardBody, CardHeader } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import { formatDateForApi } from '../utils/formatters';
+import { formatDateForApi, formatCurrency } from '../utils/formatters';
 import type { Receipt, ReceiptItem } from '../types/api';
 
 export const EditReceipt: React.FC = () => {
@@ -89,9 +89,17 @@ export const EditReceipt: React.FC = () => {
             currency: getDefaultCurrency(),
         };
 
+        const newItems = [...formData.items, itemWithCurrency];
+
+        // Recalculate subtotal and total
+        const subtotal = newItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const total = subtotal + formData.tax;
+
         setFormData({
             ...formData,
-            items: [...formData.items, itemWithCurrency],
+            items: newItems,
+            subtotal,
+            total,
         });
 
         setCurrentItem({
@@ -101,26 +109,21 @@ export const EditReceipt: React.FC = () => {
             category: '',
         });
         setError(null);
-        calculateTotal();
     };
 
     const handleRemoveItem = (index: number) => {
         const newItems = formData.items.filter((_, i) => i !== index);
+
+        // Recalculate subtotal and total
+        const subtotal = newItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const total = subtotal + formData.tax;
+
         setFormData({
             ...formData,
             items: newItems,
-        });
-        // Recalculate after removing item
-        setTimeout(() => calculateTotal(), 0);
-    };
-
-    const calculateTotal = () => {
-        const subtotal = formData.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        setFormData(prev => ({
-            ...prev,
             subtotal,
-            total: subtotal + prev.tax,
-        }));
+            total,
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -229,9 +232,9 @@ export const EditReceipt: React.FC = () => {
                                 value={formData.tax}
                                 onChange={(e) => {
                                     const tax = parseFloat(e.target.value) || 0;
-                                    setFormData({ ...formData, tax });
+                                    const subtotal = formData.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                                    setFormData({ ...formData, tax, total: subtotal + tax });
                                 }}
-                                onBlur={calculateTotal}
                             />
                         </div>
                     </CardBody>
@@ -296,7 +299,7 @@ export const EditReceipt: React.FC = () => {
                                         <div className="flex-1">
                                             <p className="font-semibold text-gray-900">{item.name}</p>
                                             <p className="text-sm text-gray-500">
-                                                {item.category} • Qty: {item.qty} • ${item.price.toFixed(2)}
+                                                {item.category} • Qty: {item.qty} • {formatCurrency(item.price, item.currency)}
                                             </p>
                                         </div>
                                         <button
@@ -321,16 +324,16 @@ export const EditReceipt: React.FC = () => {
                         <div className="space-y-2">
                             <div className="flex justify-between text-gray-600">
                                 <span>Subtotal</span>
-                                <span>${formData.subtotal.toFixed(2)}</span>
+                                <span>{formatCurrency(formData.subtotal, getDefaultCurrency())}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Tax</span>
-                                <span>${formData.tax.toFixed(2)}</span>
+                                <span>{formatCurrency(formData.tax, getDefaultCurrency())}</span>
                             </div>
                             <div className="flex justify-between pt-2 border-t border-gray-200">
                                 <span className="text-lg font-semibold text-gray-900">Total</span>
                                 <span className="text-lg font-bold text-primary-600">
-                                    ${formData.total.toFixed(2)}
+                                    {formatCurrency(formData.total, getDefaultCurrency())}
                                 </span>
                             </div>
                         </div>
